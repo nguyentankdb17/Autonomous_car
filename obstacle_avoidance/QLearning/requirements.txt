@@ -1,0 +1,8 @@
+idx2numpy==1.2.3
+numpy==1.26.3
+matplotlib==3.8.2
+matplotlib-inline==0.1.6
+cloudpickle==3.0.0
+pickleshare==0.7.5
+gym==0.26.2
+gym-notices==0.0.8

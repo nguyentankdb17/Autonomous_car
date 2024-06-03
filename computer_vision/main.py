@@ -45,11 +45,10 @@ class CameraBufferCleanerThread(threading.Thread):
 cap = cv2.VideoCapture(0)
 cam_cleaner = CameraBufferCleanerThread(cap)
 
-net = cv2.dnn.readNetFromONNX("yolov5s.onnx")
+net = cv2.dnn.readNetFromONNX("yolov5ver2.onnx")
 file = open("coco.txt","r")
 classes = file.read().split('\n')
 print(classes)
-# classes = ['parking', 'obstacle']
 
 bbox = None
 tracking = False
@@ -104,7 +103,7 @@ while True:
 
 		x_scale = width/640
 		y_scale = height/640
-
+	
 		for i in range(rows):
 			row = detections[i]
 			confidence = row[4]
@@ -114,6 +113,7 @@ while True:
 				if classes_score[ind] >= 0.25:
 					classes_ids.append(ind)
 					confidences.append(confidence)
+					print(row[:4])
 					cx, cy, w, h = row[:4]
 					x1 = int((cx- w/2)*x_scale)
 					y1 = int((cy-h/2)*y_scale)
@@ -128,7 +128,7 @@ while True:
 			parking_id = -1
 			max_conf = -1
 			for i in num_retained_boxes:
-				if classes[classes_ids[i]] == 'person' and max_conf < confidences[i]:
+				if classes[classes_ids[i]] == 'parking' and max_conf < confidences[i]:
 					parking_id = i
 					max_conf = confidences[i]
 					

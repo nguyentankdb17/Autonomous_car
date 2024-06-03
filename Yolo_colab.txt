@@ -1,0 +1,4 @@
+Link train YOLO: https://colab.research.google.com/drive/1AetyxMuv3Zg9kshTFbq7B4J0VVH7XFlR
+
+Link drive: 
+https://drive.google.com/drive/folders/1GQQqJOUtV2r9Xlvp8jIifpPNUE9-Rst4?usp=sharing

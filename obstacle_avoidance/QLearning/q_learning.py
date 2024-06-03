@@ -79,6 +79,7 @@ def train(n_training_episodes, min_epsilon, max_epsilon, learning_rate, gamma, d
     env.update_eval_graph()
     
     for episode in range(n_training_episodes):
+        env.change_map('static_dynamic')
         # Exponential decay
         epsilon = min_epsilon + (max_epsilon - min_epsilon)*np.exp(-decay_rate*episode)
     
@@ -124,7 +125,7 @@ def train(n_training_episodes, min_epsilon, max_epsilon, learning_rate, gamma, d
             mean_episode_rewards.append(np.mean(episode_rewards)) 
             mean_eval_rewards.append(mean_evaluate)
             episode_rewards = []
-            env.change_map('static_fixed')
+            env.change_map('static_random_dynamic')
             eval_graph(mean_episode_rewards, mean_eval_rewards)
             env.update_eval_graph()
 
@@ -135,7 +136,7 @@ def evaluate_agent(env, max_steps, n_eval_episodes, Q, in_train=False):
     mean_reward = 0
     total_crash = 0
     for episode in range(n_eval_episodes):
-        env.change_map(map='static_fixed')
+        env.change_map(map='static_random_dynamic')
         state = env.reset()
         total_rewards_ep = 0
     
@@ -149,7 +150,7 @@ def evaluate_agent(env, max_steps, n_eval_episodes, Q, in_train=False):
 
             if terminated:
                 if step < 10:
-                    env.change_map(map='static_fixed')
+                    env.change_map(map='static_random_dynamic')
                     state = env.reset()
                     continue
                 total_crash += 1
@@ -182,7 +183,7 @@ state_space = env.state_space
 action_space = env.action_space.n
 
 # Training parameters
-n_training_episodes = 300
+n_training_episodes = 600
 learning_rate = 0.1
 
 # Evaluation parameters
@@ -219,7 +220,7 @@ if proc == "train":
         pickle.dump(Qtable_rlcar, f)
 
 elif proc == "evaluate":
-    with open('q_table.pkl', 'rb') as f:
+    with open('mixed_q_table.pkl', 'rb') as f:
         Qtable_rlcar = pickle.load(f)
 
     # Evaluate our Agent
@@ -228,13 +229,13 @@ elif proc == "evaluate":
 
 elif proc == "tuning":
     tunings = [
-        #(0.5, 0.9, 0.005),
+        (0.5, 0.9, 0.005),
         (0.1, 0.9, 0.005),
-        #(0.05, 0.9, 0.005),
-        #(0.5, 0.95, 0.005),
-        #(0.5, 0.975, 0.005),
-        #(0.5, 0.9, 0.05),
-        #(0.5, 0.9, 0.0005)
+        (0.05, 0.9, 0.005),
+        (0.5, 0.95, 0.005),
+        (0.5, 0.975, 0.005),
+        (0.5, 0.9, 0.05),
+        (0.5, 0.9, 0.0005)
     ]
     for tune in tunings:
         lr, gm, dr = tune
