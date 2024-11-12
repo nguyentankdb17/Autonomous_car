@@ -1,1 +1,1 @@
-# The Autonomous_car project is forked which aims to update the Q-Learning Algorithm
+# The *Autonomous Car* project has been forked to focus on updating the Q-learning algorithm by implementing Deep Q-Learning algorithm instead.
